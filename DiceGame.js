@@ -8,30 +8,16 @@
 
 //Player begins by picking a race and a travel method
 //Player rolls 20 sided die to determine a move length
-//Player rolls 12 sided die to determine turn corruption
+//Player rolls 8 sided die to determine turn corruption
 //Player rolls 6 sided die to determine an encounter
 //Player must make a choice based on race to get through the encounter
-//Player rolls 8 sided die to succeed or fail in encounter
+//Player rolls 12 sided die to succeed or fail in encounter
 //Player rolls 4 sided die to call for aid if necessary
 
 
-// Begin at the Rivendell (Position 200) and attempt to reach Mordor (Position 0) to destroy the Ring of Power
-// Reach Mordor and destroy the ring before corruption reaches 100 and you are consumed by evil
-		// {
-		// 	break;
-		// }
-		// let startTurn = false
-		// function nextTurn()
-		// {
-		// document.getElementById("roll").innerHTML = "Roll";
-		// startTurn = true;
-		// }
-		// {
-		// 	if (startTurn === true)
-		// 	{
-		// 		continue;
-		// 	}
-		// }
+// Begin at the Rivendell (Position 250) and attempt to reach Mordor (Position 0) to destroy the Ring of Power
+// Reach Mordor and destroy the ring before corruption reaches 100% and you are consumed by evil
+
 
 $(document).ready(function(){
   $("p").click(function(){
@@ -96,9 +82,6 @@ function nextTurn(){
 		startTurn = true;
 }
 
-// humanStats = [3, 3]
-// dwarfStats = [5, 1]
-// hobbitStats = [1, 5]
 	let corruption = 0
 	let position = 250
 	let aid = false
@@ -110,11 +93,23 @@ function playerTurn()
 
 	if (corruption >= 100)
 	{
-		console.log("You are consumed by evil and Sauron reclaims the ring, as well as dominion over Middle-Earth")
+		console.log("You are consumed by evil and Sauron reclaims the ring, as well as dominion over Middle-Earth");
+		$.alert({
+    		title: 'The game is over!',
+    		content: 'You are corrupted by the Ring with ' + position + ' leagues to Mordor',
+			});
+		return;
 	}
 	else if (position <= 0)
 	{
-		console.log("The forces of good prevail!!! The Ring of Power is destroyed and Morgoth's influence over the land is diminished.")
+		$.alert({
+    		title: 'The game is over!',
+    		content: 'You have arrived at Mordor and destroyed the Ring of Power with only ' + corruption + '% corruption',
+			});
+			console.log("The forces of good prevail!!! The Ring of Power is destroyed and Morgoth's influence over the land is diminished.");
+			return;
+		console.log("The forces of good prevail!!! The Ring of Power is destroyed and Morgoth's influence over the land is diminished.");
+		return;
 	}
 	while (corruption <= 100 && position >= 0)
 	{
@@ -142,14 +137,14 @@ function playerTurn()
 	else if (eagle === true)
 	{
 		rollArray[0] *= 2;
-		rollArray[1] += 5;
+		rollArray[1] += 4;
 	}
-	console.log(rollArray);
-	console.log("You have the energy to move " + rollArray[0] + " leagues on this turn.")
+	alert("You have the energy to move " + rollArray[0] + " leagues on this turn.");
+	console.log("You have the energy to move " + rollArray[0] + " leagues on this turn.");
 	if (rollArray[1] >= 11)
 	{
-		alert("You have attracted the attention of the nazgul.")
-		console.log("You have attracted the attention of the nazgul.")
+		alert("You have attracted the attention of the nazgul.");
+		console.log("You have attracted the attention of the nazgul.");
 		if (rollArray[5] == 1)
 		{
 			alert("You see the nazgul coming before they can see you.");
@@ -180,7 +175,7 @@ function playerTurn()
 			}
 			if (useRing === true)
 			{
-				if (rollArray[2] >= (4))
+				if (rollArray[2] >= (7))
 				{
 				alert("You use the Ring to escape the clutches of the nazgul and move all of your expected leagues.");
 				console.log("You use the Ring to escape the clutches of the nazgul and move all of your expected leagues.");
@@ -223,6 +218,8 @@ function playerTurn()
 				rollArray[0] -= rollArray[0];
 				}
 			}
+		}
+
 		else if (rollArray[5] == 2)
 		{
 			alert("Aragorn comes to your aid! This encounter only costs you 5 leagues");			
@@ -234,15 +231,85 @@ function playerTurn()
 			alert("You are stabbed by the Witch King's blade. You do not move and extra corruption is added this turn.");
 			console.log("You are stabbed by the Witch King's blade. You do not move and extra corruption is added this turn.");
 			(rollArray[0] -= rollArray[0]);
-			(rollarray[3] += rollarray[4]);
+			(rollArray[3] += rollArray[4]);
 		}
 		else if (rollArray[5] == 4)
 		{
 			alert("Nobody comes between a nazgul and his prey");
 			console.log("Nobody comes between a nazgul and his prey");
+			let useEowyn = false;
+			let useGandalf = false;
+			let useElrond = false;
+			var text;
+			var nazgulEncounter = prompt("Pick a companion for this encounter with the nazgul! Please enter 'Eowyn', 'Gandalf', 'Elrond'");
+			switch(nazgulEncounter)
+			{
+ 			case "eowyn":
+    		text = "You have chosen to use the ring";
+    		useEowyn = true;
+   			break;
+  			case "gandalf":
+    		text = "You face the nazgul";
+    		useGandalf = true;
+    		break;
+    		case "elrond":
+    		text: "Text";
+    		useElrond = true;
+    		break;
+  			default:
+    		text = "You took too long to decide. You take on the nazgul alone!";
+    		useNobody = true;
+    		break;
+			}
+			if (useEowyn === true)
+			{
+				alert(" Nazgul - 'You fool! No living man can kill me'");
+				alert(" Eowyn - 'I am no man!'");
+				alert(" Eowyn defeats the nazgul for you, cleansing your corruption for this turn. You stay to tend to her wounds and move no leagues, however.");
+				console.log(" Eowyn defeats the nazgul for you, cleansing your corruption for this turn. You stay to tend to her wounds and move no leagues, however.");
+				(rollArray[3] -= rollArray[3]);
+				(rollArray[0] -= rollArray[0]);
+			}
+			else if (useGandalf === true)
+			{
+				alert("Nazgul - 'Your staff is broken'");
+				alert("Gandalf draws the focus of the nazgul, allowing you to continue your travels, but doubling you corruption this turn");
+				console.log("Gandalf draws the focus of the nazgul, allowing you to continue your travels, but doubling you corruption this turn");
+				(rollArray [3] += rollArray[3]);
+			}
+			else if (useElrond === true)
+			{
+				alert("Elrond forsees the nazguls next move");
+				alert("With this warning, you are able to avoid the nazgul completely if you travel by walking this turn.")
+				console.log("You are forced to walk for this turn, taking away your extra travel based on travel method");
+				if (horse === true)
+					{
+					rollArray[0] -= 6;
+					}
+				else if (eagle === true)
+					{
+					rollArray[0] *= 0.5;;
+					}
+			}
+			else if (useNobody === true)
+			{
+				alert("You have not picked a companion, the nazgul attack and you must fight for your life!");
+			if(rollArray[2] >= 10 - stats[0])
+				{
+				alert("You are able to fend off the Wraiths and move half of your expected leagues.");
+				console.log("You are able to fend off the Wraiths and move half of your expected leagues.");
+				rollArray[0] *= 0.5;
+				}
+				else
+				{
+				alert("The encounter with the Wraiths drains you of all energy and you cannot move on this turn.");
+				console.log("The encounter with the Wraiths drains you of all energy and you cannot move on this turn.");
+				rollArray[0] -= rollArray[0];
+				}
+			}
 		}
-	}
 		corruption += rollArray[3];
+		position -= rollArray[0];
 		if (corruption >= 100)
 		{
 			$.alert({
@@ -252,8 +319,7 @@ function playerTurn()
 			console.log("You are consumed by evil and Sauron reclaims the One Ring, as well as dominion over Middle-Earth");
 			return;
 		}
-		position -= rollArray[0];
-		if (position <= 0)
+		else if (position <= 0)
 		{
 			$.alert({
     		title: 'The game is over!',
@@ -270,8 +336,7 @@ function playerTurn()
 				playerTurn();
 				return;
 			}
-
-	}
+		}
 	else if (rollArray[1] < 11)
 	{
 		console.log("You manage to avoid nazgul detection this round.");
@@ -287,14 +352,14 @@ function playerTurn()
 			}
 			else
 			{
-				alert("Because you are not human, the Rohirrim continue questioning to ensure you are not a threat.");
-				console.log("Because you are not human, the Rohirrim continue questioning to ensure you are not a threat.");
+				alert("Because you are not human, the Rohirrim continue questioning to ensure you are not a threat. You are 5 leagues behind by the time they let you go.");
+				console.log("Because you are not human, the Rohirrim continue questioning to ensure you are not a threat. You are 5 leagues behind by the time they let you go.");
 				rollArray[0] -= 5;
 			}
 		}
 		else if (rollArray[4] == 2)
 		{
-			alert("Orc ambush! You may fight or flee.");
+			alert("Orc ambush!");
 			console.log("Orc ambush! You may fight or flee.");
 			let orcAmbushFight = false;
 			let orcAmbushFlee = false;
@@ -311,7 +376,7 @@ function playerTurn()
     			orcAmbushFlee = true;
     			break;
   			default:
-    			console.log("You took too long to decide. The orcs are upon you and you are forced to fight");
+    			text = "You took too long to decide. The orcs are upon you and you are forced to fight";
     			orcAambushFight = true;
     			break;
 			}
@@ -319,30 +384,33 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (9 - stats[0]))
 			{
+				alert("You managed to fend off the orcs and proceed as planned.");
 				console.log("You managed to fend off the orcs and proceed as planned.");
 			}
 			else
 			{
+				alert("The orcs overwhelm you, pushing you back 8 leagues.");
 				console.log("The orcs overwhelm you, pushing you back 8 leagues.");
 				rollArray[0] -= 8;
 			}
 		}
 			else if (orcAmbushFlee === true)
 			{
+				alert("You flee 4 leagues to escape the orcs.");
 				console.log("You flee 4 leagues to escape the orcs.");
 				rollArray[0] -= 4;
 			}
 		}
 		else if (rollArray[4] == 3)
 {
-			alert("You have scouted an orc encampment ahead. You can choose to fight the orcs or sneak past them.");
+			alert("You have scouted an orc encampment ahead.");
 			console.log("You have scouted an orc encampment ahead. You can choose to fight the orcs or sneak past them.");
 			let orcCampFight = false;
 			let orcCampSneak = false;
 			let orcCampWait = false;
 			let orcCampNothing = false;
 			var text;
-			var orcCampFightSneak = prompt("Will you charge into the camp and fight, or sneak around? Please enter 'fight' or 'sneak' or 'wait'.");
+			var orcCampFightSneak = prompt("Will you charge into the camp and fight, sneak around, or wait for the orcs to move on? Please enter 'fight' or 'sneak' or 'wait'.");
 			switch(orcCampFightSneak)
 			{
  			 case "fight":
@@ -365,11 +433,13 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (9 - stats[0]))
 			{
+				alert("You managed to kill the orcs in the camp and proceed.");
 				console.log("You managed to kill the orcs in the camp and proceed.");
 			}
 			else
 			{
-				console.log("The orcs fight back and injure you. You must take extra time to recover.");
+				alert("The orcs fight back and injure you. You must take extra time to recover and lose 8 leagues.");
+				console.log("The orcs fight back and injure you. You must take extra time to recover and lose 8 leagues.");
 				rollArray[0] -= 8;
 			}
 			}
@@ -377,28 +447,32 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (4 + stats[1]))
 			{
+				alert("You successfully sneak past the orcs and continue on your journey.");
 				console.log("You successfully sneak past the orcs and continue on your journey.");
 			}
 			else
 			{
-				console.log("An orc catches you sneaking and you have to take a longer way around.");
+				alert("An orc catches you sneaking and you have to go 8 leagues out of your way to get around.");
+				console.log("An orc catches you sneaking and you have to go 8 leagues out of your way to get around.");
 				rollArray[0] -= 8;
 			}
 			}
 			else if (orcCampWait === true)
 			{
-				console.log("You wait for the orcs to move on before you proceed.");
+				alert("You wait for the orcs to move on before you proceed. This time costs you 4 leagues");
+				console.log("You wait for the orcs to move on before you proceed. This time costs you 4 leagues");
 				rollArray[0] -= 4;
 			}
 			else if (orcCampNothing === true)
 			{
-				console.log("You spend so much time thinking that the orcs have time to move on.");
+				alert("You spend so much time thinking that the orcs have time to move on. This time costs you 5 leagues");
+				console.log("You spend so much time thinking that the orcs have time to move on. This time costs you 5 leagues");
 				rollArray[0] -= 4;
 			}
 		}
 		else if (rollArray[4] == 4)
 		{
-			alert("You have been captured by Elves! You may attempt to escape, or serve your sentence,")
+			alert("You have been captured by Elves!")
 			console.log("You have been captured by Elves! You may attempt to escape, or serve your sentence,");
 			let elfEscape = false;
 			let elfServe = false;
@@ -423,17 +497,20 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (9 - stats[1]))
 			{
+				alert("You manage to escape from the prison and proceed as planned.");
 				console.log("You manage to escape from the prison and proceed as planned.");
 			}
 			else
 			{
-				console.log("The elves catch you trying to escape, holding you for another 8 leagues.");
+				alert("The elves catch you trying to escape, holding you for enough time to waste 8 leagues of travel.");
+				console.log("The elves catch you trying to escape, holding you for enough time to waste 8 leagues of travel.");
 				rollArray[0] -= 8;
 			}
 		}
 			else if (elfServe === true)
 			{
-				console.log("You serve your sentence and lose 4 leagues")
+				alert("You serve your sentence and you are released 4 leagues behind.");
+				console.log("You serve your sentence and you are released 4 leagues behind.");
 				rollArray[0] -= 4;
 			}
 		}
@@ -469,11 +546,13 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (9 - stats[0]))
 			{
+				alert("You managed to chop down the ent and proceed.");
 				console.log("You managed to chop down the ent and proceed.");
 			}
 			else
 			{
-				console.log("The ent proves too strong for your skills with an axe. You must take extra time to recover.");
+				alert("The ent proves too strong for your skills with an axe. You must take extra time to recover and give up 8 leagues of travel.");
+				console.log("The ent proves too strong for your skills with an axe. You must take extra time to recover and give up 8 leagues of travel.");
 				rollArray[0] -= 8;
 			}
 			}
@@ -481,28 +560,32 @@ function playerTurn()
 			{
 			if (rollArray[2] >= (4 + stats[1]))
 			{
-				console.log("You successfully dodge the ents furious blows and continue on your journey.")
+				alert("You successfully dodge the ents furious blows and continue on your journey.");
+				console.log("You successfully dodge the ents furious blows and continue on your journey.");
 			}
 			else
 			{
-				console.log("The end lands one crushing blow and leaves you injured. You must recover")
+				alert("The end lands one crushing blow and leaves you injured. You must recover and give up 8 leagues of travel");
+				console.log("The end lands one crushing blow and leaves you injured. You must recover and give up 8 leagues of travel");
 				rollArray[0] -= 8;
 			}
 			}
 			else if (entWait === true)
 			{
-				console.log("You wait for the ent to settle down before you proceed.")
+				alert("You wait for the ent to settle down before you proceed, and travel 4 leagues less than expected.");
+				console.log("You wait for the ent to settle down before you proceed, and travel 4 leagues less than expected.");
 				rollArray[0] -= 4;
 			}
 			else if (entNothing === true)
 			{
-				console.log("You spend so much time thinking that the ent has calmed down and allowed you to move.")
+				alert("You spend so much time thinking that the ent has calmed down and allowed you to move. This time costs you 5 leagues of travel");
+				console.log("You spend so much time thinking that the ent has calmed down and allowed you to move. This time costs you 5 leagues of travel");
 				rollArray[0] -= 4;
 			}
 		}
 		else if (rollArray[4] == 6)
 		{
-			alert("Gollum is tracking you for this stretch of the journey, adding to your corruption.");
+			alert("Gollum is tracking you for this stretch of the journey, adding " + rollArray[5] + " to your corruption.");
 			console.log("Gollum is tracking you for this stretch of the journey, adding to your corruption.");
 			rollArray[3] += rollArray[5]
 		}
@@ -538,7 +621,7 @@ function playerTurn()
 let start = false;
 function beginGame() {
 	document.getElementById("start").innerHTML = "The game has started";
-	alert("The 250 league journey from Rivendell to Mordor has begun. Best of luck, adventurer.")
+	alert("The 250 league journey from Rivendell to Mordor has begun. Best of luck, adventurer.");
   console.log("The 250 league journey from Rivendell to Mordor has begun. Best of luck, adventurer.");
 playerTurn()
 }
